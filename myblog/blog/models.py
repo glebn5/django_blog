@@ -8,3 +8,12 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def content_for_admin(self):
+        return f'{self.content[:50]}...'
+
+    class Meta:
+        db_table = 'posts'
+        ordering = ['-created_at']
+        unique_together = ['title']
+        
