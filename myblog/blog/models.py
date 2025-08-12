@@ -5,6 +5,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(verbose_name='URL', unique=True, db_index=True, max_length=255)
 
     def __str__(self):
         return self.title
