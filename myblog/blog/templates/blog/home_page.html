@@ -10,7 +10,7 @@
 <body>
     <h1>This is a home page!</h1>
     {% for post in posts %}
-        <p>{{post.title}}</p>
+        <a href="{% url 'post_page' post.slug %}" >{{post.title}}</a> <br>
     {% endfor %}
 </body>
 </html>

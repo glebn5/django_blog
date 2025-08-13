@@ -8,10 +8,10 @@
 <body>
     <h1>{{post.title}}</h1>
     {% if prev_post %}
-        <p>Prev: {{prev_post}}</p>
+        <a href="{% url 'post_page' prev_post.slug %}">Prev: {{prev_post}}</a> <br>
     {% endif %}
     {% if next_post %}
-        <p>Next: {{next_post}}</p>
+        <a href="{% url 'post_page' next_post.slug %}">Next: {{next_post}}</a>
     {% endif %}
 </body>
 </html>
