@@ -7,6 +7,9 @@
 </head>
 <body>
     <h1>{{post.title}}</h1>
+    <p>{{post.content|linebreaks}}</p>
+    <a href="{% url 'post_update' post.slug %}">Update this post</a> <br>
+    <a href="{% url 'post_delete' post.slug %}">Delete this post</a> <br><br>
     {% if prev_post %}
         <a href="{% url 'post_page' prev_post.slug %}">Prev: {{prev_post}}</a> <br>
     {% endif %}
