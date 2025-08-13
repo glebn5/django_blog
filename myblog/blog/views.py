@@ -16,6 +16,6 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         obj = self.object
-        context['prev_post'] = Post.objects.filter(id__lt=obj.id).last()
-        context['next_post'] = Post.objects.filter(id__gt=obj.id).first()
+        context['prev_post'] = Post.objects.filter(id__lt=obj.id).first()
+        context['next_post'] = Post.objects.filter(id__gt=obj.id).last()
         return context
