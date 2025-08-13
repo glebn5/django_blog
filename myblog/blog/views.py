@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 class PostListView(ListView):
     model = Post
@@ -30,6 +31,10 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self, **kwargs):
         return reverse('post_page', kwargs={'post_slug': self.object.slug})
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Your post have been created!')
+        return super().form_valid(form)
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
@@ -39,9 +44,17 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     
     def get_success_url(self, **kwargs):
         return reverse('post_page', kwargs={'post_slug': self.object.slug})
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Your updates have been applied!')
+        return super().form_valid(form)
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('home_page')
     template_name = 'blog/post_delete.html'
     slug_url_kwarg = 'post_slug'
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your post have been deleted!')
+        return super().form_valid(form)
