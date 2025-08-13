@@ -8,6 +8,7 @@
     <title>Home page</title>
 </head>
 <body>
+    {% include '../base/messages.html' %}
     <h1>This is a home page!</h1>
     {% for post in posts %}
         <a href="{% url 'post_page' post.slug %}" >{{post.title}}</a> <br>
