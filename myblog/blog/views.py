@@ -7,6 +7,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
+from django.views.decorators.csrf import requires_csrf_token
 
 class PostListView(ListView):
     model = Post
@@ -41,6 +43,16 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['title', 'content']
     template_name = 'blog/post_update.html'
     slug_url_kwarg = 'post_slug'
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        print(self.request.user)
+        print(obj.author)
+        if self.request.user != obj.author:
+            messages.error(self.request, "You can't edit this post, because you aren't the author!")
+            raise PermissionDenied("!")
+        return obj
+        
     
     def get_success_url(self, **kwargs):
         return reverse('post_page', kwargs={'post_slug': self.object.slug})
@@ -58,3 +70,17 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         messages.success(self.request, 'Your post have been deleted!')
         return super().form_valid(form)
+    
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        print(self.request.user)
+        print(obj.author)
+        if self.request.user != obj.author:
+            messages.error(self.request, "You can't edit this post, because you aren't the author!")
+            raise PermissionDenied("!")
+        return obj
+    
+
+@requires_csrf_token
+def custom_403(request, exception):
+    return render(request, 'errors/403.html', status=403)
