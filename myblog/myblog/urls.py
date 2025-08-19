@@ -16,9 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from blog.views import custom_403
+from django.conf.urls import handler403
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
     path('accounts/', include("users.urls"))
 ]
+
+if not settings.DEBUG:
+    handler403 = 'blog.views.custom_403'
